@@ -6,6 +6,7 @@ interface ArtifactTitleProps {
   artifactUpdateFailed: boolean;
 }
 
+// Artifact/document title component
 export function ArtifactTitle(props: ArtifactTitleProps) {
   return (
     <div className="pl-[6px] pt-3 flex flex-col items-start justify-start ml-[6px] gap-1 max-w-1/2">
