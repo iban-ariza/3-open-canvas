@@ -5,6 +5,11 @@
  * 
  * This is the main canvas component that serves as the primary workspace interface.
  * It manages the layout and interaction between the chat interface and artifact display.
+ * 
+ * Architecture:
+ * - Uses React Server Components (marked with "use client")
+ * - Implements a resizable two-panel layout system
+ * - Manages state through multiple React contexts (Graph, User, Thread)
  */
 
 import { ArtifactRenderer } from "@/components/artifacts/ArtifactRenderer";
@@ -39,18 +44,26 @@ import { ContentComposerChatInterface } from "./content-composer";
 
 /**
  * CanvasComponent handles the main workspace layout and functionality.
- * It consists of two main parts:
- * 1. Chat interface panel (left side)
- * 2. Artifact display panel (right side)
  * 
- * Features:
- * - Resizable panels
- * - Collapsible chat interface
- * - Quick start functionality for code and text
- * - Web search results integration
+ * State Management:
+ * - GraphContext: Manages artifact data and chat state
+ * - UserContext: Handles user authentication and preferences
+ * - ThreadContext: Controls conversation threading and model configurations
+ * 
+ * URL State:
+ * - Maintains chat collapse state in URL parameters
+ * - Enables shareable URLs with preserved interface state
+ * 
+ * Layout Components:
+ * - ResizablePanelGroup: Main container with drag-adjustable panels
+ * - Left Panel: Chat interface (collapsible)
+ * - Right Panel: Artifact display and web search results
  */
 export function CanvasComponent() {
-  // State management for user context, graph data, and thread information
+  // Context hooks provide global state management
+  // graphData: Manages artifacts and chat state
+  // user: Contains user authentication and preferences
+  // threadContext: Handles conversation management and model settings
   const { graphData } = useGraphContext();
   const { user } = useUserContext();
   const { threadId, clearThreadsWithNoValues, setModelName, setModelConfig } =
@@ -58,19 +71,31 @@ export function CanvasComponent() {
   const { setArtifact, chatStarted, setChatStarted } = graphData;
   const { toast } = useToast();
 
-  // Local state for UI controls
+  /**
+   * Local State Management:
+   * isEditing: Controls artifact editing mode
+   * webSearchResultsOpen: Controls visibility of search sidebar
+   * chatCollapsed: Manages chat panel collapse state
+   */
   const [isEditing, setIsEditing] = useState(false);
   const [webSearchResultsOpen, setWebSearchResultsOpen] = useState(false);
   const [chatCollapsed, setChatCollapsed] = useState(false);
 
-  // URL parameter handling for chat collapsed state
+  /**
+   * URL State Management:
+   * - searchParams: Access to URL query parameters
+   * - router: Next.js router for URL manipulation
+   * - chatCollapsedSearchParam: Tracks chat panel state in URL
+   */
   const searchParams = useSearchParams();
   const router = useRouter();
   const chatCollapsedSearchParam = searchParams.get(CHAT_COLLAPSED_QUERY_PARAM);
 
   /**
-   * Effect to sync chat collapsed state with URL parameters
-   * Ensures chat state persistence across page reloads
+   * Effect: URL State Synchronization
+   * - Parses chat collapsed state from URL
+   * - Handles invalid URL parameters gracefully
+   * - Updates UI state based on URL parameters
    */
   useEffect(() => {
     try {
@@ -86,7 +111,10 @@ export function CanvasComponent() {
   }, [chatCollapsedSearchParam]);
 
   /**
-   * Effect to clean up unused threads when user or thread changes
+   * Effect: Thread Cleanup
+   * - Triggers when user or thread ID changes
+   * - Removes empty conversation threads
+   * - Maintains clean thread state
    */
   useEffect(() => {
     if (!threadId || !user) return;
@@ -95,9 +123,17 @@ export function CanvasComponent() {
   }, [threadId, user]);
 
   /**
-   * Handles the quick start functionality for creating new artifacts
-   * @param type - The type of artifact to create ('text' or 'code')
-   * @param language - The programming language for code artifacts
+   * Quick Start Handler
+   * Creates new artifacts with predefined templates
+   * 
+   * @param type - Artifact type ('text' or 'code')
+   * @param language - Programming language for code artifacts
+   * 
+   * Process:
+   * 1. Validates required parameters
+   * 2. Initializes chat
+   * 3. Creates appropriate artifact template
+   * 4. Updates application state
    */
   const handleQuickStart = (
     type: "text" | "code",
@@ -144,7 +180,9 @@ export function CanvasComponent() {
 
   return (
     <ResizablePanelGroup direction="horizontal" className="h-screen">
-      {/* Initial state when chat hasn't started */}
+      {/* Initial Interface State
+          Shown when no chat is active
+          Provides quick start options and thread selection */}
       {!chatStarted && (
         <NoSSRWrapper>
           {/* Chat interface - adds query string param if chat is collapsed. (replaces the URL with router.replace) */}
@@ -190,7 +228,10 @@ export function CanvasComponent() {
         </NoSSRWrapper>
       )}
 
-      {/* Active chat panel when chat is not collapsed */}
+      {/* Active Chat Interface
+          - Displays when chat is active and not collapsed
+          - Contains thread history and input interface
+          - Handles model selection and configuration */}
       {!chatCollapsed && chatStarted && (
         <ResizablePanel
           defaultSize={25}
@@ -245,7 +286,10 @@ export function CanvasComponent() {
         </ResizablePanel>
       )}
 
-      {/* Main content area with artifact display */}
+      {/* Main Content Area
+          - Displays artifacts and search results
+          - Adjusts size based on chat panel state
+          - Handles artifact editing and rendering */}
       {chatStarted && (
         <>
           <ResizableHandle />
@@ -290,5 +334,10 @@ export function CanvasComponent() {
   );
 }
 
-// Memoized version of the canvas component for performance optimization
+/**
+ * Memoized Canvas Component
+ * - Prevents unnecessary re-renders
+ * - Optimizes performance for complex state changes
+ * - Maintains smooth panel resizing
+ */
 export const Canvas = React.memo(CanvasComponent);
