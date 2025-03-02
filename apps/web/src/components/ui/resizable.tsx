@@ -1,9 +1,25 @@
 "use client";
+
+/**
+ * Resizable Panel Components
+ * 
+ * A collection of components that implement resizable panels using react-resizable-panels.
+ * These components provide a flexible layout system with draggable dividers.
+ */
+
 import * as ResizablePrimitive from "react-resizable-panels";
 
 import { cn } from "@/lib/utils";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 
+/**
+ * ResizablePanelGroup
+ * 
+ * Container component that manages a group of resizable panels.
+ * - Supports both horizontal and vertical layouts
+ * - Handles flex direction based on group orientation
+ * - Manages panel size distribution
+ */
 const ResizablePanelGroup = ({
   className,
   ...props
@@ -17,8 +33,26 @@ const ResizablePanelGroup = ({
   />
 );
 
+/**
+ * ResizablePanel
+ * 
+ * Individual panel component that can be resized within a PanelGroup
+ * Direct export of the primitive panel for simplicity
+ */
 const ResizablePanel = ResizablePrimitive.Panel;
 
+/**
+ * ResizableHandle
+ * 
+ * Interactive divider between panels that enables resizing
+ * - Renders an optional drag handle indicator
+ * - Supports both vertical and horizontal orientations
+ * - Implements focus and hover states
+ * - Provides visual feedback during interaction
+ * 
+ * @param withHandle - Optional flag to show a visual drag handle
+ * @param className - Additional CSS classes
+ */
 const ResizableHandle = ({
   withHandle,
   className,
@@ -41,4 +75,5 @@ const ResizableHandle = ({
   </ResizablePrimitive.PanelResizeHandle>
 );
 
-export { ResizablePanelGroup, ResizablePanel, ResizableHandle };
+export { ResizableHandle, ResizablePanel, ResizablePanelGroup };
+
