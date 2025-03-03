@@ -336,9 +336,11 @@ export function TextRendererComponent(props: TextRendererProps) {
           <ViewRawText isRawView={isRawView} setIsRawView={setIsRawView} />
         </div>
       )}
+
+      {/* MARKDOWN RAW VIEW */}
       {isRawView ? (
         <Textarea
-          className="whitespace-pre-wrap font-mono text-sm px-[54px] border-0 shadow-none h-full outline-none ring-0 rounded-none  focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="whitespace-pre-wrap font-mono text-md px-[54px] border-0 shadow-none h-full outline-none ring-0 rounded-none  focus-visible:ring-0 focus-visible:ring-offset-0"
           value={rawMarkdown}
           onChange={onChangeRawMarkdown}
         />
