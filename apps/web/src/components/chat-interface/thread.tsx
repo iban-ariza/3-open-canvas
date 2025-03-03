@@ -1,8 +1,11 @@
+import { useAssistantContext } from "@/contexts/AssistantContext";
 import { useGraphContext } from "@/contexts/GraphContext";
+import { useThreadContext } from "@/contexts/ThreadProvider";
+import { useUserContext } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
-import { ProgrammingLanguageOptions } from "@opencanvas/shared/types";
 import { ThreadPrimitive } from "@assistant-ui/react";
 import { Thread as ThreadType } from "@langchain/langgraph-sdk";
+import { ProgrammingLanguageOptions } from "@opencanvas/shared/types";
 import { ArrowDownIcon, PanelRightOpen, SquarePen } from "lucide-react";
 import { Dispatch, FC, SetStateAction } from "react";
 import { ReflectionsDialog } from "../reflections-dialog/ReflectionsDialog";
@@ -14,9 +17,6 @@ import { AssistantMessage, UserMessage } from "./messages";
 import ModelSelector from "./model-selector";
 import { ThreadHistory } from "./thread-history";
 import { ThreadWelcome } from "./welcome";
-import { useUserContext } from "@/contexts/UserContext";
-import { useThreadContext } from "@/contexts/ThreadProvider";
-import { useAssistantContext } from "@/contexts/AssistantContext";
 
 const ThreadScrollToBottom: FC = () => {
   return (
@@ -108,7 +108,7 @@ export const Thread: FC<ThreadProps> = (props: ThreadProps) => {
           <ThreadHistory
             switchSelectedThreadCallback={switchSelectedThreadCallback}
           />
-          <TighterText className="text-xl">Open Canvas</TighterText>
+          <TighterText className="text-xl">Canvas</TighterText>
           {!hasChatStarted && (
             <ModelSelector
               modelName={modelName}
