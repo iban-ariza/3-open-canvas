@@ -142,8 +142,10 @@ a {
   font-size: 0.9em;
 }
 
+/* Selector for the ENTIRE block note */
 .custom-blocknote-theme {
   --bn-colors-editor-text: #3f3f3f;
+  padding: 0px 20px;
 }
 
 .custom-blocknote-theme a {
@@ -157,6 +159,8 @@ a {
   text-underline-offset: 2px;
 }
 
+/* Selector for the text content (block note). Otherwise it defaults to another font, even though you place font-family at the layout.tsx level. */
 .bn-shadcn * {
   font-family: var(--font-arboria-book);
+  margin-top: 5px;
 }
