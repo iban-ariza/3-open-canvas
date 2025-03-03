@@ -59,6 +59,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
           currentArtifactIndex={props.currentArtifactContent.index}
           totalArtifactVersions={props.totalArtifactVersions}
         />
+        {/* BRAIN ICON - REFLECTIONS */}
         <ReflectionsDialog selectedAssistant={props.selectedAssistant} />
       </div>
     </div>
