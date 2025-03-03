@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 
+// Component - just to place tighter text (letters closer to each other)
 export function TighterText({
   className,
   children,
