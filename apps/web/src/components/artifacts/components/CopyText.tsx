@@ -1,18 +1,23 @@
-import { motion } from "framer-motion";
 import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
 import { useToast } from "@/hooks/use-toast";
-import { isArtifactCodeContent } from "@opencanvas/shared/utils/artifacts";
 import { ArtifactCodeV3, ArtifactMarkdownV3 } from "@opencanvas/shared/types";
+import { isArtifactCodeContent } from "@opencanvas/shared/utils/artifacts";
+import { motion } from "framer-motion";
 import { Copy } from "lucide-react";
 
+// currentArtifactContent - the actual content of the artifact/document. 
 interface CopyTextProps {
   currentArtifactContent: ArtifactCodeV3 | ArtifactMarkdownV3;
 }
 
+/*
+Copy Text component - button that copies text from the artifact content, which is the right pane content (can be code or markdown).
+*/
 export function CopyText(props: CopyTextProps) {
   const { toast } = useToast();
 
   return (
+    // TODO - remove this animation (starts with transparent, then animation goes on to full visible). Duration of transition takes 0.2 seconds. This is for the copy button.
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -25,10 +30,12 @@ export function CopyText(props: CopyTextProps) {
         className="transition-colors"
         delayDuration={400}
         onClick={() => {
+          // choose code or markdown, based on artifact content
           try {
             const text = isArtifactCodeContent(props.currentArtifactContent)
               ? props.currentArtifactContent.code
               : props.currentArtifactContent.fullMarkdown;
+            // copy text to clipboard
             navigator.clipboard.writeText(text).then(() => {
               toast({
                 title: "Copied to clipboard",
