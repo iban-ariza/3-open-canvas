@@ -17,6 +17,7 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
 *::-webkit-scrollbar {
   display: none;
 }
@@ -29,13 +30,16 @@ a {
   .text-balance {
     text-wrap: balance;
   }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 }
 
@@ -67,6 +71,7 @@ a {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -93,26 +98,13 @@ a {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-  html {
-    font-family:
-      "Inter",
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      Roboto,
-      Helvetica,
-      Arial,
-      sans-serif,
-      "Apple Color Emoji",
-      "Segoe UI Emoji",
-      "Segoe UI Symbol";
-  }
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -138,9 +130,8 @@ a {
 }
 
 .artifact-content {
-  line-height: calc(
-    1.625em + 2px
-  ); /* Adjust the base value (1.625em) if needed */
+  line-height: calc(1.625em + 2px);
+  /* Adjust the base value (1.625em) if needed */
 }
 
 .inline-code {
@@ -156,11 +147,16 @@ a {
 }
 
 .custom-blocknote-theme a {
-  color: #2563eb !important; /* Tailwind blue-600 */
+  color: #2563eb !important;
+  /* Tailwind blue-600 */
   text-decoration: none;
 }
 
 .custom-blocknote-theme a:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+.bn-shadcn * {
+  font-family: var(--font-arboria-book);
 }
